@@ -1,0 +1,10 @@
+.body {
+	background-color: orange;
+	margin: 0px;
+	padding: 0px;
+}
+
+.burger_field {
+	width: 250px;
+	height: 40px;
+}
