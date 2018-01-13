@@ -1,30 +1,36 @@
 var express = require('express');
 var router = express.Router()
-var burger = require('../models/burger.js');
+var Burger = require('../models/burger.js');
 
 // Create all our routes and set up logic within those routes where required.
 router.get('/', function(req,res){
-	burger.getAll(function(burger_data){
-		console.log(burger_data);
-		res.render('index', {burger_data});
-	})
+	Burger.findAll({}).then(function(burger_data) {
+	  res.render('index', {burger_data});
+    });
 });
 
 
 router.put('/burgers/update', function(req,res){
-	burger.updateOne(req.body.burger_id, function(result){
-		console.log(result);
+	if (req.body.burger_id) {
+      Burger.update({
+      	devoured: true
+      },{
+        where: {
+          id: req.body.burger_id
+        }
+      }).then(function(results) {
 		res.redirect('/');
-	});
+      });
+    }
 });
-
 
 router.post('/burgers/addOne', function(req,res){
-	burger.addOne(req.body.burger_name, function(result){
-		console.log(result);
+	Burger.create({
+        burger_name: req.body.burger_name,
+        devoured: false
+    }).then(function(results) {
 		res.redirect('/');
-	});
+    });
 });
-
 
 module.exports = router;
